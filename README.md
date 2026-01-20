@@ -2,16 +2,15 @@
 
 Real-time usage monitoring for Claude Code using the Anthropic API.
 
-![Status Bar Example](https://via.placeholder.com/600x40?text=~_~V+Opus+~T~B+~_~S~A+path+~T~B+5h+~V~H~V~H~V~H~V~H~V~Q~V~Q~V~Q~V~Q+25%25+(4h30m)+~T~B+7d+~V~H~V~H~V~Q~V~Q~V~Q~V~Q~V~Q~VV
-~Q+15%25+(5d12h))
+![Status Bar Example](https://via.placeholder.com/600x40?text=Status+Bar+Example)
 
 ## Features
 
-- ~_~V Current model display (Opus/Sonnet/Haiku with colors)
-- ~_~S~A Current working directory
-- ~O~O 5-hour usage with progress bar and reset time
-- ~_~S~E 7-day usage with progress bar and reset time
-- ~_~N Color-coded progress bars (green ~F~R yellow ~F~R red)
+- 📊 Current model display (Opus/Sonnet/Haiku with colors)
+- 📁 Current working directory
+- ⏱️ 5-hour usage with progress bar and reset time
+- 📈 7-day usage with progress bar and reset time
+- ▓ Color-coded progress bars (green → yellow → red)
 
 ## Installation
 
