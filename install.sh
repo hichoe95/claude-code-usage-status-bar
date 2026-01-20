@@ -24032,7 +24032,7 @@ set -e
 STATUSLINE_URL="https://raw.githubusercontent.com/YOUR_USERNAME/claude-statusbar/main/statusline.py"
 CLAUDE_DIR="$HOME/.claude"
 
-echo "~_~S Installing Claude Code Status Bar..."
+echo "📦 Installing Claude Code Status Bar..."
 
 # Create .claude directory if not exists
 mkdir -p "$CLAUDE_DIR"
@@ -24157,7 +24157,7 @@ def make_progress_bar(percentage, width=8):
     else:
         color = Colors.BRIGHT_GREEN
 
-    bar = "~V~H" * filled + "~V~Q" * empty 
+    bar = "█" * filled + "░" * empty 
     return f"{color}{bar}{Colors.RESET}"
 
 
@@ -24221,12 +24221,12 @@ def main():
     model_color = get_model_color(model_display)
 
     parts = [
-        f"~_~V {model_color}{C.BOLD}{model_display}{C.RESET}",
-        f"{C.DIM}~T~B{C.RESET}",
-        f"{C.CYAN}~_~S~A {display_path}{{.RESET}},
-        f"{C.DIM}~T~B{C.RESET}",
+        f"📊 {model_color}{C.BOLD}{model_display}{C.RESET}",
+        f"{C.DIM}│{C.RESET}",
+        f"{C.CYAN}📁 {display_path}{C.RESET}",
+        f"{C.DIM}│{C.RESET}",
         f"{C.YELLOW}5h{C.RESET} {make_progress_bar(pct_5h)} {C.BOLD}{pct_5h}%{C.RESET} {C.DIM}({time_5h}){C.RESET}",
-        f"{C.DIM}~T~B{C.RESET}",
+        f"{C.DIM}│{C.RESET}",
         f"{C.BLUE}7d{C.RESET} {make_progress_bar(pct_7d)} {C.BOLD}{pct_7d}%{C.RESET} {C.DIM}({time_7d}){C.RESET}",
     ]
 
@@ -24275,10 +24275,10 @@ else
 SETTINGS_EOF
 fi
 
-echo "~\~E Installation complete!"
+echo "✅ Installation complete!"
 echo ""
 echo "Status bar will show:"
-echo "  ~_~V Model ~T~B ~_~S~A Path ~T~B 5h ~V~H~V~H~V~H~V~H~V~Q~V~Q~V~Q~V~Q 25% (4h30m) ~T~B 7d ~V~H~V~H~V~Q~V~Q~V~Q~V~Q~V~Q~V~Q 15% (5d12h)"
+echo "  📊 Model │ 📁 Path │ 5h ████████ 25% (4h30m) │ 7d ████░░░░ 15% (5d12h)"
 echo ""
 echo "Restart Claude Code to see the status bar."
                                                                                        
