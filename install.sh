@@ -4,7 +4,7 @@
 
 set -e
 
-STATUSLINE_URL="https://raw.githubusercontent.com/YOUR_USERNAME/claude-statusbar/main/statusline.py"
+STATUSLINE_URL="https://raw.githubusercontent.com/hichoe95/claude-code-usage-status-bar/main/statusline.py"
 CLAUDE_DIR="$HOME/.claude"
 
 echo "📦 Installing Claude Code Status Bar..."
