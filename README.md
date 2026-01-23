@@ -36,7 +36,7 @@ Real-time usage monitoring for Claude Code.
 ### One-line install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/user/claude-statusbar/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hichoe95/claude-code-usage-status-bar/main/install.sh | bash
 ```
 
 ### Manual install
