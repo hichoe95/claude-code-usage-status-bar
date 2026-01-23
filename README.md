@@ -18,7 +18,7 @@ Real-time usage monitoring for Claude Code using the Anthropic API.
 ### One-line install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/claude-statusbar/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hichoe95/claude-statusbar/main/install.sh | bash
 ```
 
 ### Manual install
