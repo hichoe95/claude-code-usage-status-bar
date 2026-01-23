@@ -2,8 +2,6 @@
 
 Real-time usage monitoring for Claude Code using the Anthropic API.
 
-🤖+Opus+│+5h+████░░░░+25%25+(4h30m)+│+7d+██░░░░░░+15%25+(5d12h)+│+CTX+██░░░░░░+12%25+│+📁+path
-
 ## Features
 
 - 🤖 Current model display (Opus/Sonnet/Haiku with colors)
