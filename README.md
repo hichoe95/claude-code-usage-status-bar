@@ -2,7 +2,7 @@
 
 Real-time usage monitoring for Claude Code using the Anthropic API.
 
-![Status Bar Example](https://via.placeholder.com/800x40?text=🤖+Opus+│+5h+████░░░░+25%25+(4h30m)+│+7d+██░░░░░░+15%25+(5d12h)+│+CTX+██░░░░░░+12%25+│+📁+path)
+🤖+Opus+│+5h+████░░░░+25%25+(4h30m)+│+7d+██░░░░░░+15%25+(5d12h)+│+CTX+██░░░░░░+12%25+│+📁+path
 
 ## Features
 
