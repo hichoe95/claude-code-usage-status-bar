@@ -2,22 +2,23 @@
 
 Real-time usage monitoring for Claude Code using the Anthropic API.
 
-![Status Bar Example](https://via.placeholder.com/600x40?text=Status+Bar+Example)
+![Status Bar Example](https://via.placeholder.com/800x40?text=🤖+Opus+│+5h+████░░░░+25%25+(4h30m)+│+7d+██░░░░░░+15%25+(5d12h)+│+CTX+██░░░░░░+12%25+│+📁+path)
 
 ## Features
 
-- 📊 Current model display (Opus/Sonnet/Haiku with colors)
-- 📁 Current working directory
+- 🤖 Current model display (Opus/Sonnet/Haiku with colors)
 - ⏱️ 5-hour usage with progress bar and reset time
-- 📈 7-day usage with progress bar and reset time
-- ▓ Color-coded progress bars (green → yellow → red)
+- 📅 7-day usage with progress bar and reset time
+- 📊 Context window usage (CTX) with progress bar
+- 📁 Current working directory
+- 🎨 Color-coded progress bars (green → yellow → red)
 
 ## Installation
 
 ### One-line install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hichoe95/claude-code-usage-status-bar/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/claude-statusbar/main/install.sh | bash
 ```
 
 ### Manual install
