@@ -37,6 +37,7 @@ class Colors:
     YELLOW = "\033[33m"
     BLUE = "\033[34m"
     CYAN = "\033[36m"
+    WHITE = "\033[37m"
     BRIGHT_RED = "\033[91m"
     BRIGHT_GREEN = "\033[92m"
     BRIGHT_YELLOW = "\033[93m"
@@ -73,6 +74,48 @@ def fetch_usage_from_api():
     except:
         pass
     return None
+
+
+def get_git_info(cwd):
+    """Get git branch and status info."""
+    try:
+        # Check if in git repo
+        result = subprocess.run(
+            ["git", "rev-parse", "--is-inside-work-tree"],
+            capture_output=True, text=True, timeout=2, cwd=cwd
+        )
+        if result.returncode != 0:
+            return None
+
+        # Get branch name
+        result = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            capture_output=True, text=True, timeout=2, cwd=cwd
+        )
+        if result.returncode == 0:
+            branch = result.stdout.strip()
+        else:
+            # Fallback for repos without commits
+            result = subprocess.run(
+                ["git", "symbolic-ref", "--short", "HEAD"],
+                capture_output=True, text=True, timeout=2, cwd=cwd
+            )
+            branch = result.stdout.strip() if result.returncode == 0 else "?"
+
+        # Get status (modified, staged, untracked counts)
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            capture_output=True, text=True, timeout=2, cwd=cwd
+        )
+        if result.returncode == 0:
+            lines = result.stdout.strip().split('\n') if result.stdout.strip() else []
+            modified = sum(1 for l in lines if l and l[1] == 'M')
+            staged = sum(1 for l in lines if l and l[0] in 'MADRC')
+            untracked = sum(1 for l in lines if l and l[:2] == '??')
+            return {"branch": branch, "modified": modified, "staged": staged, "untracked": untracked}
+        return {"branch": branch, "modified": 0, "staged": 0, "untracked": 0}
+    except:
+        return None
 
 
 def parse_reset_time(iso_string):
@@ -150,6 +193,10 @@ def main():
     context_window = data.get("context_window", {})
     ctx_used_pct = context_window.get("used_percentage")
 
+    # Get current task/activity info
+    activity = data.get("activity", {})
+    current_task = activity.get("current_task") or activity.get("status")
+
     usage = fetch_usage_from_api()
 
     if usage:
@@ -164,32 +211,73 @@ def main():
         pct_5h, time_5h = 0, "?"
         pct_7d, time_7d = 0, "?"
 
+    # Get git info
+    git_info = get_git_info(current_dir)
+
     C = Colors
     model_color = get_model_color(model_display)
 
     parts = [
         f"🤖 {model_color}{C.BOLD}{model_display}{C.RESET}",
-        f"{C.DIM}│{C.RESET}",
-        f"{C.YELLOW}5h{C.RESET} {make_progress_bar(pct_5h)} {C.BOLD}{pct_5h}%{C.RESET} {C.DIM}({time_5h}){C.RESET}",
-        f"{C.DIM}│{C.RESET}",
-        f"{C.BLUE}7d{C.RESET} {make_progress_bar(pct_7d)} {C.BOLD}{pct_7d}%{C.RESET} {C.DIM}({time_7d}){C.RESET}",
     ]
+
+    # Add current task if available
+    if current_task:
+        task_display = current_task[:30] + "..." if len(current_task) > 30 else current_task
+        parts.extend([
+            f"{C.WHITE}│{C.RESET}",
+            f"{C.WHITE}⚡ {task_display}{C.RESET}",
+        ])
+
+    parts.extend([
+        f"{C.WHITE}│{C.RESET}",
+        f"{C.YELLOW}5h{C.RESET} {make_progress_bar(pct_5h)} {C.BOLD}{pct_5h}%{C.RESET} {C.WHITE}({time_5h}){C.RESET}",
+        f"{C.WHITE}│{C.RESET}",
+        f"{C.BLUE}7d{C.RESET} {make_progress_bar(pct_7d)} {C.BOLD}{pct_7d}%{C.RESET} {C.WHITE}({time_7d}){C.RESET}",
+    ])
 
     # Add context window info if available
     if ctx_used_pct is not None:
         ctx_pct = int(ctx_used_pct)
         parts.extend([
-            f"{C.DIM}│{C.RESET}",
+            f"{C.WHITE}│{C.RESET}",
             f"{C.BRIGHT_MAGENTA}CTX{C.RESET} {make_progress_bar(ctx_pct)} {C.BOLD}{ctx_pct}%{C.RESET}",
         ])
 
-    # Path at the end
-    parts.extend([
-        f"{C.DIM}│{C.RESET}",
-        f"{C.CYAN}📁 {display_path}{C.RESET}",
-    ])
+    # Add git info if available
+    if git_info:
+        branch = git_info["branch"]
+        # Truncate long branch names
+        if len(branch) > 15:
+            branch = branch[:12] + "..."
 
+        git_status = []
+        if git_info["staged"] > 0:
+            git_status.append(f"{C.BRIGHT_GREEN}+{git_info['staged']}{C.RESET}")
+        if git_info["modified"] > 0:
+            git_status.append(f"{C.BRIGHT_YELLOW}~{git_info['modified']}{C.RESET}")
+        if git_info["untracked"] > 0:
+            git_status.append(f"{C.CYAN}?{git_info['untracked']}{C.RESET}")
+
+        git_part = f"{C.BRIGHT_GREEN}git{C.RESET} {C.WHITE}{branch}{C.RESET}"
+        if git_status:
+            git_part += f" {' '.join(git_status)}"
+
+        parts.extend([
+            f"{C.WHITE}│{C.RESET}",
+            git_part,
+        ])
+
+    # First line
     print(" ".join(parts))
+
+    # Second line: path (parent normal, current dir bright bold)
+    if "/" in display_path:
+        parent = display_path.rsplit("/", 1)[0] + "/"
+        current = display_path.rsplit("/", 1)[1]
+        print(f"{C.CYAN}📁 {parent}{C.RESET}{C.BRIGHT_CYAN}{C.BOLD}{current}{C.RESET}")
+    else:
+        print(f"{C.BRIGHT_CYAN}📁 {C.BOLD}{display_path}{C.RESET}")
 
 
 if __name__ == "__main__":
@@ -237,6 +325,7 @@ fi
 echo "✅ Installation complete!"
 echo ""
 echo "Status bar will show:"
-echo "  🤖 Model │ 5h ████░░░░ 25% (4h30m) │ 7d ██░░░░░░ 15% (5d12h) │ CTX ██░░░░░░ 12% │ 📁 Path"
+echo "  🤖 Model │ 5h ████░░░░ 25% (4h30m) │ 7d ██░░░░░░ 15% (5d12h) │ CTX ██░░░░░░ 12% │ git main ~2"
+echo "  📁 ~/project/path"
 echo ""
 echo "Restart Claude Code to see the status bar."

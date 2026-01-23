@@ -1,22 +1,42 @@
 # Claude Code Status Bar
 
-Real-time usage monitoring for Claude Code using the Anthropic API.
+Real-time usage monitoring for Claude Code.
+
+```
+🤖 Opus │ 5h ████░░░░ 25% (4h30m) │ 7d ██░░░░░░ 15% (5d12h) │ CTX ██░░░░░░ 12% │ git main +1 ~2 ?3
+📁 ~/project/my-app
+```
 
 ## Features
 
-- 🤖 Current model display (Opus/Sonnet/Haiku with colors)
-- ⏱️ 5-hour usage with progress bar and reset time
-- 📅 7-day usage with progress bar and reset time
-- 📊 Context window usage (CTX) with progress bar
-- 📁 Current working directory
-- 🎨 Color-coded progress bars (green → yellow → red)
+| Item | Description |
+|------|-------------|
+| 🤖 Model | Current model (Opus/Sonnet/Haiku) with color |
+| 5h | 5-hour usage with progress bar and reset time |
+| 7d | 7-day usage with progress bar and reset time |
+| CTX | Context window usage |
+| git | Branch name and file status |
+| 📁 Path | Current working directory |
+
+### Git Status
+
+- `+N` (green): staged files
+- `~N` (yellow): modified files
+- `?N` (cyan): untracked files
+
+### Progress Bar Colors
+
+- Green: 0-49%
+- Yellow: 50-69%
+- Bright Yellow: 70-89%
+- Red: 90-100%
 
 ## Installation
 
 ### One-line install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hichoe95/claude-code-usage-status-bar/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/user/claude-statusbar/main/install.sh | bash
 ```
 
 ### Manual install
@@ -24,7 +44,7 @@ curl -fsSL https://raw.githubusercontent.com/hichoe95/claude-code-usage-status-b
 1. Copy `statusline.py` to `~/.claude/`:
 
 ```bash
-cp statusline.py ~/.claude/statusline.py
+curl -o ~/.claude/statusline.py https://raw.githubusercontent.com/user/claude-statusbar/main/statusline.py
 chmod +x ~/.claude/statusline.py
 ```
 
@@ -42,29 +62,19 @@ chmod +x ~/.claude/statusline.py
 
 3. Restart Claude Code.
 
-## How it works
-
-The script fetches real usage data from the Anthropic API:
-
-```
-GET https://api.anthropic.com/api/oauth/usage
-Authorization: Bearer {oauth_token}
-```
-
-The OAuth token is automatically read from `~/.claude/.credentials.json` (created when you log into Claude Code).
-
 ## Requirements
 
 - Python 3.6+
-- Claude Code with OAuth login (not API key)
-- `curl` command
+- Claude Code with OAuth login
+- `curl`, `git`
 
 ## Uninstall
 
 ```bash
 rm ~/.claude/statusline.py
-# Remove "statusLine" section from ~/.claude/settings.json
 ```
+
+Then remove the `statusLine` section from `~/.claude/settings.json`.
 
 ## License
 
