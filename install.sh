@@ -248,9 +248,9 @@ def main():
     if git_info:
         branch = git_info["branch"]
         # Truncate long branch names
-        if len(branch) > 15:
-            branch = branch[:12] + "..."
-
+        # if len(branch) > 15:
+            # branch = branch[:12] + "..."
+        pass
         git_status = []
         if git_info["staged"] > 0:
             git_status.append(f"{C.BRIGHT_GREEN}+{git_info['staged']}{C.RESET}")
